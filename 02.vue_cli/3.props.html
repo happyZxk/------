@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <my :mny="mny"></my>
+    </div>
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script>
+      let component = {
+        template: `<div>儿子 {{mny}} <button @click="change">点击</button></div>`,
+        props: {
+          mny: {
+            type: Object, //类型校验
+            default: () => ({ a: 1 }), //默认值
+            required: true, //必填校验
+          },
+        },
+        methods: {
+          change() {
+            this.mny = 200;
+          },
+        },
+        data() {
+          return { mny: 1 };
+        },
+        beforeCreate() {
+          console.log(this.$parent.$children[0] === this);
+        },
+      };
+      let vm = new Vue({
+        el: "#app",
+        data: {
+          mny: 100,
+        },
+        components: {
+          //在实例上注册组件
+          my: component,
+        },
+      });
+    </script>
+  </body>
+</html>
